@@ -1,0 +1,35 @@
+{
+  "eyebrow": "Right Here in St. Peters",
+  "titleLead": "Marketing Built for",
+  "titleHighlight": "St. Charles County",
+  "titleEnd": "& the St. Louis Metro",
+  "paragraphs": [
+    "You’re great at what you do. But if locals can’t find you on Google — or your site is slow and stuck in 2015 — they’re calling your competitor instead.",
+    "We get it, because we’re local too. Gateway Spark is based right here in St. Peters, and we know exactly what it takes to win customers in St. Charles County and across the greater St. Louis area. No agency jargon. No empty reports. Just more business through your door."
+  ],
+  "areas": [
+    { "name": "St. Peters", "hq": true },
+    { "name": "St. Charles", "hq": false },
+    { "name": "O’Fallon", "hq": false },
+    { "name": "Wentzville", "hq": false },
+    { "name": "Cottleville", "hq": false },
+    { "name": "Lake Saint Louis", "hq": false },
+    { "name": "St. Louis Metro", "hq": false }
+  ],
+  "pains": [
+    {
+      "title": "“We’re not showing up on Google.”",
+      "body": "If you’re not in the top results, you’re invisible. We get you ranking where your customers are already searching."
+    },
+    {
+      "title": "“Our website is slow and outdated.”",
+      "body": "Slow sites lose customers in seconds. We build fast, modern sites that load instantly and turn visitors into calls."
+    },
+    {
+      "title": "“We’re just not getting enough leads.”",
+      "body": "No leads means no growth. We turn your online presence into a steady stream of calls and form submissions."
+    }
+  ],
+  "ctaLabel": "Fix This For My Business",
+  "image": ""
+}

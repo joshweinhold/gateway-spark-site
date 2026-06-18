@@ -1,0 +1,2 @@
+This folder holds images you upload through the CMS (/admin).
+You can safely leave this placeholder file here.

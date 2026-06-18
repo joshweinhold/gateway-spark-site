@@ -1,0 +1,52 @@
+{
+  "eyebrow": "What We Do",
+  "titleLead": "Everything Your Local Business Needs to",
+  "titleHighlight": "Win More Customers",
+  "intro": "One local team handling your SEO, website, brand, and automation — all built around a single goal: more leads, more calls, more revenue.",
+  "items": [
+    {
+      "tag": "Local SEO",
+      "title": "Get Found First on Google",
+      "desc": "When someone nearby searches for what you do, you should be the first name they see — not your competitor.",
+      "bullets": [
+        "Rank in the Google Map Pack",
+        "Optimized Google Business Profile",
+        "Local keywords that bring buyers",
+        "More calls, directions & visits"
+      ]
+    },
+    {
+      "tag": "Website Design",
+      "title": "Fast Sites That Turn Clicks Into Calls",
+      "desc": "A slow, outdated website costs you customers every single day. We build fast sites designed to convert.",
+      "bullets": [
+        "Loads in under 2 seconds",
+        "Mobile-first & conversion-focused",
+        "Built to rank on Google",
+        "Click-to-call & easy booking"
+      ]
+    },
+    {
+      "tag": "Branding",
+      "title": "A Brand Locals Remember & Trust",
+      "desc": "Look like the obvious choice in your market. Bold, modern branding that builds instant trust.",
+      "bullets": [
+        "Logo & visual identity",
+        "Consistent across every channel",
+        "Builds trust at first glance",
+        "Stands out from competitors"
+      ]
+    },
+    {
+      "tag": "AI Automation",
+      "title": "Never Miss Another Lead",
+      "desc": "Stop losing customers to slow follow-up. Our AI answers, follows up, and books jobs for you — 24/7.",
+      "bullets": [
+        "Instant lead response",
+        "Automated follow-up & reminders",
+        "Missed-call text-back",
+        "More booked jobs, less busywork"
+      ]
+    }
+  ]
+}

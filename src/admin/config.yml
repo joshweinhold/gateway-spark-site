@@ -1,0 +1,230 @@
+# ============================================================
+#  Gateway Spark — CMS configuration
+#  Edit the two CHANGE-ME lines below after you create your
+#  GitHub repo and deploy to Netlify.
+# ============================================================
+
+backend:
+  name: github
+  repo: YOUR_GITHUB_USERNAME/gateway-spark-site   # <-- CHANGE ME (e.g. janedoe/gateway-spark-site)
+  branch: main
+
+# Where uploaded images are committed, and the URL path used on the live site
+media_folder: "src/assets/uploads"
+public_folder: "/assets/uploads"
+
+# Shown as a "View site" link inside the editor (optional)
+site_url: https://your-site.netlify.app          # <-- CHANGE ME (optional)
+display_url: https://your-site.netlify.app
+
+collections:
+  - name: content
+    label: "Website Content"
+    delete: false
+    editor:
+      preview: false
+    files:
+      # ---------- Business / SEO / Contact ----------
+      - file: "src/_data/business.json"
+        name: business
+        label: "1 · Business Info & SEO"
+        fields:
+          - { name: name, label: "Business Name", widget: string }
+          - { name: tagline, label: "Tagline", widget: string }
+          - { name: phone, label: "Phone (as displayed)", widget: string }
+          - { name: phoneHref, label: "Phone (dial format, e.g. +16365550188)", widget: string }
+          - { name: email, label: "Email", widget: string }
+          - { name: addressStreet, label: "Street Address", widget: string }
+          - { name: addressCity, label: "City", widget: string }
+          - { name: addressState, label: "State", widget: string }
+          - { name: addressZip, label: "ZIP", widget: string }
+          - { name: hours, label: "Hours", widget: string }
+          - { name: geoLat, label: "Latitude", widget: string, required: false }
+          - { name: geoLng, label: "Longitude", widget: string, required: false }
+          - { name: siteUrl, label: "Site URL (no trailing slash)", widget: string }
+          - { name: seoTitle, label: "SEO Title (browser tab + Google)", widget: string }
+          - { name: seoDescription, label: "SEO Meta Description", widget: text }
+          - { name: seoKeywords, label: "SEO Keywords", widget: text, required: false }
+          - { name: logoImage, label: "Logo image (optional — replaces built-in logo)", widget: image, required: false }
+          - { name: ogImage, label: "Social share image (optional)", widget: image, required: false }
+          - { name: favicon, label: "Favicon (optional)", widget: image, required: false }
+          - { name: facebook, label: "Facebook URL", widget: string, required: false }
+          - { name: instagram, label: "Instagram URL", widget: string, required: false }
+          - { name: linkedin, label: "LinkedIn URL", widget: string, required: false }
+          - { name: navCtaLabel, label: "Top-right Button Label", widget: string }
+
+      # ---------- Hero ----------
+      - file: "src/_data/hero.json"
+        name: hero
+        label: "2 · Hero (Top Section)"
+        fields:
+          - { name: badge, label: "Location Badge", widget: string }
+          - { name: headlineLead, label: "Headline — first part", widget: string }
+          - { name: headlineHighlight, label: "Headline — green part", widget: string }
+          - { name: subheadline, label: "Subheadline", widget: text }
+          - { name: primaryCta, label: "Primary Button", widget: string }
+          - { name: secondaryCta, label: "Secondary Button", widget: string }
+          - name: trust
+            label: "Trust Badges"
+            widget: list
+            fields:
+              - { name: text, label: "Text", widget: string }
+          - { name: snapshotTitle, label: "Snapshot Card Title", widget: string }
+          - name: snapshotBars
+            label: "Snapshot Bars"
+            widget: list
+            fields:
+              - { name: label, label: "Label", widget: string }
+              - { name: value, label: "Value (e.g. #1)", widget: string }
+              - { name: width, label: "Bar Fill (e.g. 94%)", widget: string }
+          - { name: snapshotFootNumber, label: "Big Number", widget: string }
+          - { name: snapshotFootLabel, label: "Big Number Label", widget: string }
+
+      # ---------- Services ----------
+      - file: "src/_data/services.json"
+        name: services
+        label: "3 · Services"
+        fields:
+          - { name: eyebrow, label: "Eyebrow", widget: string }
+          - { name: titleLead, label: "Heading — first part", widget: string }
+          - { name: titleHighlight, label: "Heading — green part", widget: string }
+          - { name: intro, label: "Intro", widget: text }
+          - name: items
+            label: "Service Cards"
+            widget: list
+            fields:
+              - { name: tag, label: "Tag", widget: string }
+              - { name: title, label: "Title", widget: string }
+              - { name: desc, label: "Description", widget: text }
+              - name: bullets
+                label: "Bullets"
+                widget: list
+                field: { name: bullet, label: "Bullet", widget: string }
+
+      # ---------- Results ----------
+      - file: "src/_data/results.json"
+        name: results
+        label: "4 · Results / Value"
+        fields:
+          - { name: eyebrow, label: "Eyebrow", widget: string }
+          - { name: titleLead, label: "Heading — first part", widget: string }
+          - { name: titleHighlight, label: "Heading — green part", widget: string }
+          - name: paragraphs
+            label: "Paragraphs"
+            widget: list
+            field: { name: paragraph, label: "Paragraph", widget: text }
+          - { name: leadLine, label: "Highlighted Line", widget: text }
+          - { name: ctaLabel, label: "Button Label", widget: string }
+          - { name: ctaHref, label: "Button Link", widget: string }
+          - name: stats
+            label: "Stats"
+            widget: list
+            fields:
+              - { name: count, label: "Number", widget: string }
+              - { name: suffix, label: "Suffix (X, s, +, /7)", widget: string }
+              - { name: label, label: "Label", widget: string }
+
+      # ---------- Local Trust ----------
+      - file: "src/_data/local.json"
+        name: local
+        label: "5 · Local Trust"
+        fields:
+          - { name: eyebrow, label: "Eyebrow", widget: string }
+          - { name: titleLead, label: "Heading — first part", widget: string }
+          - { name: titleHighlight, label: "Heading — green part", widget: string }
+          - { name: titleEnd, label: "Heading — end part", widget: string }
+          - name: paragraphs
+            label: "Paragraphs"
+            widget: list
+            field: { name: paragraph, label: "Paragraph", widget: text }
+          - { name: image, label: "Local Photo (optional)", widget: image, required: false }
+          - name: areas
+            label: "Service Area Chips"
+            widget: list
+            fields:
+              - { name: name, label: "Area", widget: string }
+              - { name: hq, label: "Highlight as HQ", widget: boolean, default: false }
+          - name: pains
+            label: "Pain Points"
+            widget: list
+            fields:
+              - { name: title, label: "Headline", widget: string }
+              - { name: body, label: "Body", widget: text }
+          - { name: ctaLabel, label: "Button Label", widget: string }
+
+      # ---------- Process ----------
+      - file: "src/_data/process.json"
+        name: process
+        label: "6 · Process Steps"
+        fields:
+          - { name: eyebrow, label: "Eyebrow", widget: string }
+          - { name: titleLead, label: "Heading — first part", widget: string }
+          - { name: titleHighlight, label: "Heading — green part", widget: string }
+          - name: steps
+            label: "Steps"
+            widget: list
+            fields:
+              - { name: n, label: "Number (e.g. 01)", widget: string }
+              - { name: title, label: "Title", widget: string }
+              - { name: body, label: "Body", widget: text }
+          - { name: ctaLabel, label: "Button Label", widget: string }
+
+      # ---------- Reviews ----------
+      - file: "src/_data/reviews.json"
+        name: reviews
+        label: "7 · Reviews"
+        fields:
+          - { name: eyebrow, label: "Eyebrow", widget: string }
+          - { name: titleLead, label: "Heading — first part", widget: string }
+          - { name: titleHighlight, label: "Heading — green part", widget: string }
+          - { name: rating, label: "Rating (e.g. 5.0)", widget: string }
+          - { name: ratingLabel, label: "Rating Label", widget: string }
+          - name: items
+            label: "Reviews"
+            widget: list
+            fields:
+              - { name: quote, label: "Quote", widget: text }
+              - { name: name, label: "Name", widget: string }
+              - { name: meta, label: "Business — Location", widget: string }
+              - { name: initials, label: "Initials (used if no photo)", widget: string }
+              - { name: avatar, label: "Photo (optional)", widget: image, required: false }
+
+      # ---------- Call To Action ----------
+      - file: "src/_data/cta.json"
+        name: cta
+        label: "8 · Call To Action"
+        fields:
+          - { name: eyebrow, label: "Eyebrow", widget: string }
+          - { name: titleLead, label: "Heading — first part", widget: string }
+          - { name: titleHighlight, label: "Heading — green part", widget: string }
+          - { name: body, label: "Body", widget: text }
+          - { name: subline, label: "Line under phone", widget: text }
+          - { name: buttonLabel, label: "Submit Button", widget: string }
+          - { name: formNote, label: "Note under form", widget: string }
+          - { name: successTitle, label: "Success Title", widget: string }
+          - { name: successBody, label: "Success Message", widget: text }
+          - name: serviceOptions
+            label: "Service Dropdown Options"
+            widget: list
+            field: { name: option, label: "Option", widget: string }
+
+      # ---------- Footer ----------
+      - file: "src/_data/footer.json"
+        name: footer
+        label: "9 · Footer"
+        fields:
+          - { name: about, label: "About Blurb", widget: text }
+          - { name: servicesHeading, label: "Services Heading", widget: string }
+          - name: servicesLinks
+            label: "Services Links"
+            widget: list
+            fields:
+              - { name: label, label: "Label", widget: string }
+              - { name: href, label: "Link", widget: string }
+          - { name: areasHeading, label: "Areas Heading", widget: string }
+          - name: serviceAreas
+            label: "Service Areas"
+            widget: list
+            field: { name: area, label: "Area", widget: string }
+          - { name: contactHeading, label: "Contact Heading", widget: string }
+          - { name: bottomTagline, label: "Bottom Tagline", widget: string }

@@ -1,0 +1,17 @@
+{
+  "name": "gateway-spark-site",
+  "version": "1.0.0",
+  "description": "Gateway Spark marketing website with an editable CMS (Eleventy + Sveltia CMS).",
+  "scripts": {
+    "build": "eleventy",
+    "start": "eleventy --serve"
+  },
+  "license": "UNLICENSED",
+  "private": true,
+  "devDependencies": {
+    "@11ty/eleventy": "^2.0.1"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

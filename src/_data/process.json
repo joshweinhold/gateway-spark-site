@@ -1,0 +1,23 @@
+{
+  "eyebrow": "The Process",
+  "titleLead": "How We Get You More Customers — in",
+  "titleHighlight": "3 Simple Steps",
+  "steps": [
+    {
+      "n": "01",
+      "title": "Audit",
+      "body": "We find exactly what’s holding you back. A free website & Google audit shows where you’re losing customers right now — and the fastest wins."
+    },
+    {
+      "n": "02",
+      "title": "Fix & Build",
+      "body": "We fix it fast. A lightning-quick website, local SEO, sharp branding, and automation — all built to perform and bring in business."
+    },
+    {
+      "n": "03",
+      "title": "Grow & Automate",
+      "body": "We grow your leads, then automate the follow-up so customers keep coming in while you stay focused on running the business."
+    }
+  ],
+  "ctaLabel": "Start With a Free Audit"
+}

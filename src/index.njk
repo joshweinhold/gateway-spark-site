@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ business.seoTitle }}</title>
+<meta name="description" content="{{ business.seoDescription }}">
+<meta name="keywords" content="{{ business.seoKeywords }}">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="canonical" href="{{ business.siteUrl }}/">
+{% if business.favicon %}<link rel="icon" href="{{ business.favicon }}">{% endif %}
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{{ business.name }}">
+<meta property="og:title" content="{{ business.seoTitle }}">
+<meta property="og:description" content="{{ business.seoDescription }}">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="{{ business.siteUrl }}/">
+{% if business.ogImage %}<meta property="og:image" content="{{ business.ogImage }}">{% endif %}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ business.seoTitle }}">
+<meta name="twitter:description" content="{{ business.seoDescription }}">
+{% if business.ogImage %}<meta name="twitter:image" content="{{ business.ogImage }}">{% endif %}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- LocalBusiness Schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "@id": "{{ business.siteUrl | safe }}/#business",
+  "name": "{{ business.name | safe }}",
+  "alternateName": "{{ business.name | safe }} Marketing",
+  "description": "{{ business.seoDescription | safe }}",
+  "url": "{{ business.siteUrl | safe }}/",
+  "telephone": "{{ business.phoneHref | safe }}",
+  "email": "{{ business.email | safe }}",
+  {% if business.logoImage %}"image": "{{ business.logoImage | safe }}",
+  "logo": "{{ business.logoImage | safe }}",
+  {% endif %}"slogan": "{{ business.tagline | safe }}",
+  "priceRange": "$$",
+  "currenciesAccepted": "USD",
+  "paymentAccepted": "Cash, Credit Card, ACH",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "{{ business.addressStreet | safe }}",
+    "addressLocality": "{{ business.addressCity | safe }}",
+    "addressRegion": "{{ business.addressState | safe }}",
+    "postalCode": "{{ business.addressZip | safe }}",
+    "addressCountry": "US"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": {{ business.geoLat }},
+    "longitude": {{ business.geoLng }}
+  },
+  "areaServed": [
+    {%- for a in local.areas %}
+    { "@type": "City", "name": "{{ a.name | safe }}" }{% if not loop.last %},{% endif %}
+    {%- endfor %}
+  ],
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+      "opens": "08:00",
+      "closes": "18:00"
+    }
+  ],
+  "sameAs": [
+    "{{ business.facebook | safe }}",
+    "{{ business.instagram | safe }}",
+    "{{ business.linkedin | safe }}"
+  ],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Marketing Services",
+    "itemListElement": [
+      {%- for s in services.items %}
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "{{ s.tag | safe }}", "description": "{{ s.desc | safe }}" } }{% if not loop.last %},{% endif %}
+      {%- endfor %}
+    ]
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "{{ reviews.rating | safe }}",
+    "reviewCount": "47"
+  }
+}
+</script>
+
+{% raw %}
+<style>
+:root{
+  --bg:#0a0a0b;
+  --bg-alt:#0f0f12;
+  --surface:#141418;
+  --surface-2:#17171c;
+  --line:rgba(255,255,255,.08);
+  --line-strong:rgba(255,255,255,.14);
+  --lime:#DFFF00;
+  --lime-dim:#b9d400;
+  --white:#ffffff;
+  --muted:#a6a6b0;
+  --muted-dim:#6c6c78;
+  --glow:0 0 28px rgba(223,255,0,.45);
+  --radius:16px;
+  --maxw:1180px;
+  --font-display:'Montserrat',system-ui,sans-serif;
+  --font-body:'Inter',system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-body);
+  background:var(--bg);
+  color:var(--white);
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+section{scroll-margin-top:84px}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+h1,h2,h3,h4{font-family:var(--font-display);font-weight:800;line-height:1.07;letter-spacing:-.02em}
+a{color:inherit;text-decoration:none}
+img,svg{display:block}
+.lime{color:var(--lime)}
+.spark-bar{height:3px;width:100%;background:linear-gradient(90deg,transparent,var(--lime),transparent);position:fixed;top:0;left:0;z-index:1001}
+
+/* Buttons */
+.btn{
+  display:inline-flex;align-items:center;gap:9px;
+  font-family:var(--font-display);font-weight:800;font-size:1rem;
+  padding:15px 28px;border-radius:50px;border:0;cursor:pointer;
+  transition:transform .2s ease, box-shadow .25s ease, background .2s ease;
+  letter-spacing:.01em;line-height:1;white-space:nowrap;
+}
+.btn-primary{background:var(--lime);color:#0a0a0a;box-shadow:0 0 0 rgba(223,255,0,0);}
+.btn-primary:hover{box-shadow:var(--glow);transform:translateY(-2px) scale(1.02);background:#eaff3a}
+.btn-ghost{background:transparent;color:var(--white);border:1.5px solid var(--line-strong)}
+.btn-ghost:hover{border-color:var(--lime);color:var(--lime);transform:translateY(-2px)}
+.btn-lg{padding:18px 36px;font-size:1.1rem}
+.btn .bolt{width:16px;height:16px}
+
+/* Eyebrow */
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--font-display);font-weight:700;font-size:.8rem;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--lime);
+  margin-bottom:18px;
+}
+.eyebrow svg{width:15px;height:15px}
+.section-head{max-width:760px;margin-bottom:54px}
+.section-head h2{font-size:clamp(2rem,4.6vw,3.2rem);margin-bottom:18px}
+.section-head p{color:var(--muted);font-size:1.12rem}
+.pad{padding:clamp(72px,9vw,120px) 0}
+.alt{background:var(--bg-alt)}
+
+/* NAV */
+header.nav{
+  position:fixed;top:0;left:0;width:100%;z-index:1000;
+  transition:background .3s ease,border-color .3s ease,backdrop-filter .3s;
+  border-bottom:1px solid transparent;
+}
+header.nav.scrolled{background:rgba(10,10,11,.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav-inner{max-width:var(--maxw);margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:11px}
+.brand .mark{width:42px;height:42px;flex:none;filter:drop-shadow(0 0 10px rgba(223,255,0,.25))}
+.brand .word{font-family:var(--font-display);font-weight:900;font-size:1.18rem;letter-spacing:.02em;line-height:1}
+.brand .word b{color:var(--lime);font-weight:900}
+.nav-links{display:flex;align-items:center;gap:30px}
+.nav-links a{font-size:.95rem;font-weight:500;color:var(--muted);transition:color .2s}
+.nav-links a:hover{color:var(--white)}
+.nav-cta{display:flex;align-items:center;gap:16px}
+.nav-call{display:flex;align-items:center;gap:7px;font-family:var(--font-display);font-weight:700;font-size:.98rem;color:var(--white)}
+.nav-call:hover{color:var(--lime)}
+.nav-call svg{width:16px;height:16px}
+.burger{display:none;background:none;border:0;cursor:pointer;width:30px;height:24px;position:relative}
+.burger span{position:absolute;left:0;height:2.5px;width:100%;background:var(--white);border-radius:2px;transition:.3s}
+.burger span:nth-child(1){top:2px}.burger span:nth-child(2){top:11px}.burger span:nth-child(3){top:20px}
+.burger.open span:nth-child(1){top:11px;transform:rotate(45deg)}
+.burger.open span:nth-child(2){opacity:0}
+.burger.open span:nth-child(3){top:11px;transform:rotate(-45deg)}
+
+/* HERO */
+.hero{position:relative;padding:160px 0 96px;overflow:hidden}
+.hero::before{content:"";position:absolute;top:-200px;right:-120px;width:680px;height:680px;
+  background:radial-gradient(circle,rgba(223,255,0,.16),transparent 62%);pointer-events:none;z-index:0}
+.hero::after{content:"";position:absolute;inset:0;z-index:0;opacity:.4;pointer-events:none;
+  background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:64px 64px;
+  -webkit-mask-image:radial-gradient(circle at 70% 25%,#000,transparent 75%);
+  mask-image:radial-gradient(circle at 70% 25%,#000,transparent 75%);}
+.hero .wrap{position:relative;z-index:1}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center}
+.hero-badge{display:inline-flex;align-items:center;gap:9px;padding:8px 16px;border:1px solid var(--line-strong);
+  border-radius:50px;font-size:.82rem;font-weight:600;color:var(--muted);margin-bottom:26px;background:rgba(255,255,255,.02)}
+.hero-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--lime);box-shadow:0 0 10px var(--lime);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.hero h1{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:900;margin-bottom:22px}
+.hero h1 .hl{color:var(--lime);position:relative;text-shadow:0 0 30px rgba(223,255,0,.35)}
+.hero .sub{font-size:clamp(1.05rem,1.7vw,1.28rem);color:var(--muted);max-width:620px;margin-bottom:34px}
+.hero .sub strong{color:var(--white);font-weight:600}
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:34px}
+.trust-row{display:flex;gap:26px;flex-wrap:wrap}
+.trust-row .ti{display:flex;align-items:center;gap:9px;font-size:.92rem;font-weight:600;color:var(--muted)}
+.trust-row .ti svg{width:18px;height:18px;color:var(--lime);flex:none}
+/* hero visual card */
+.hero-card{position:relative;background:linear-gradient(160deg,var(--surface),#0c0c0f);border:1px solid var(--line);
+  border-radius:22px;padding:30px;box-shadow:0 30px 70px -30px rgba(0,0,0,.8)}
+.hero-card .glow-ring{position:absolute;inset:-1px;border-radius:22px;padding:1px;background:linear-gradient(140deg,rgba(223,255,0,.5),transparent 40%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.hero-card .hc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+.hero-card .hc-top span{font-family:var(--font-display);font-weight:700;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.live-dot{display:inline-flex;align-items:center;gap:7px;color:var(--lime);font-weight:700;font-size:.78rem}
+.live-dot i{width:8px;height:8px;border-radius:50%;background:var(--lime);box-shadow:0 0 10px var(--lime);animation:pulse 1.6s infinite;font-style:normal}
+.hc-bars{display:flex;flex-direction:column;gap:16px}
+.hc-bar label{display:flex;justify-content:space-between;font-size:.84rem;color:var(--muted);margin-bottom:7px;font-weight:500}
+.hc-bar label b{color:var(--lime);font-family:var(--font-display)}
+.hc-track{height:9px;background:rgba(255,255,255,.07);border-radius:50px;overflow:hidden}
+.hc-fill{height:100%;border-radius:50px;background:linear-gradient(90deg,var(--lime-dim),var(--lime));box-shadow:0 0 12px rgba(223,255,0,.5);width:0;transition:width 1.4s cubic-bezier(.2,.8,.2,1)}
+.hero-card .hc-foot{margin-top:24px;padding-top:20px;border-top:1px solid var(--line);display:flex;align-items:center;gap:12px}
+.hero-card .hc-foot .big{font-family:var(--font-display);font-weight:900;font-size:2rem;color:var(--white);line-height:1}
+.hero-card .hc-foot .lbl{font-size:.82rem;color:var(--muted);line-height:1.3}
+
+/* logo bolt motion squares */
+.mark .px{animation:flick 3s infinite}
+@keyframes flick{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* SERVICES */
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:30px 26px;transition:transform .3s ease,border-color .3s ease,box-shadow .3s ease;overflow:hidden}
+.card::before{content:"";position:absolute;top:0;left:0;width:100%;height:3px;background:var(--lime);transform:scaleX(0);transform-origin:left;transition:transform .35s ease}
+.card:hover{transform:translateY(-7px);border-color:rgba(223,255,0,.35);box-shadow:0 24px 50px -28px rgba(223,255,0,.25)}
+.card:hover::before{transform:scaleX(1)}
+.card .ico{width:52px;height:52px;border-radius:13px;display:grid;place-items:center;background:var(--lime-soft,rgba(223,255,0,.12));border:1px solid rgba(223,255,0,.25);margin-bottom:20px;transition:box-shadow .3s}
+.card:hover .ico{box-shadow:var(--glow)}
+.card .ico svg{width:26px;height:26px;color:var(--lime)}
+.card h3{font-size:1.28rem;margin-bottom:6px}
+.card .tag{font-family:var(--font-display);font-weight:700;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--lime);display:block;margin-bottom:12px}
+.card p{color:var(--muted);font-size:.96rem;margin-bottom:18px}
+.card ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+.card li{display:flex;align-items:flex-start;gap:9px;font-size:.9rem;color:#cfcfd6}
+.card li svg{width:16px;height:16px;color:var(--lime);flex:none;margin-top:3px}
+
+/* RESULTS */
+.results-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:28px 24px;text-align:left;transition:border-color .3s,transform .3s}
+.stat:hover{border-color:rgba(223,255,0,.35);transform:translateY(-4px)}
+.stat .num{font-family:var(--font-display);font-weight:900;font-size:clamp(2.2rem,4vw,2.9rem);color:var(--lime);line-height:1;text-shadow:0 0 22px rgba(223,255,0,.3)}
+.stat .num .suf{font-size:.55em}
+.stat .lbl{color:var(--muted);font-size:.92rem;margin-top:8px;font-weight:500}
+.results-copy h2{font-size:clamp(2rem,4.4vw,3.1rem);margin-bottom:20px}
+.results-copy p{color:var(--muted);font-size:1.1rem;margin-bottom:18px}
+.results-copy .lead-line{color:var(--white);font-weight:600;font-size:1.18rem;border-left:3px solid var(--lime);padding-left:18px}
+
+/* LOCAL */
+.local-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:56px;align-items:center}
+.pains{display:grid;gap:16px}
+.pain{display:flex;gap:18px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;transition:border-color .3s}
+.pain:hover{border-color:rgba(223,255,0,.3)}
+.pain .pi{width:44px;height:44px;border-radius:11px;flex:none;display:grid;place-items:center;background:rgba(255,80,80,.1);border:1px solid rgba(255,90,90,.25)}
+.pain .pi svg{width:22px;height:22px;color:#ff6b6b}
+.pain h4{font-size:1.12rem;margin-bottom:4px;font-family:var(--font-display)}
+.pain p{color:var(--muted);font-size:.94rem}
+.pain p .lime{font-weight:600}
+.areas{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.areas span{font-size:.85rem;font-weight:600;color:#cfcfd6;background:rgba(255,255,255,.04);border:1px solid var(--line);padding:7px 15px;border-radius:50px}
+.areas span.hq{background:var(--lime);color:#0a0a0a;border-color:var(--lime)}
+
+/* PROCESS */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;counter-reset:step;position:relative}
+.step{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:36px 28px;transition:transform .3s,border-color .3s}
+.step:hover{transform:translateY(-6px);border-color:rgba(223,255,0,.35)}
+.step .n{font-family:var(--font-display);font-weight:900;font-size:3.2rem;color:rgba(223,255,0,.18);line-height:1;margin-bottom:8px}
+.step .stepico{position:absolute;top:34px;right:28px;width:30px;height:30px;color:var(--lime)}
+.step h3{font-size:1.35rem;margin-bottom:10px}
+.step p{color:var(--muted);font-size:.98rem}
+
+/* REVIEWS */
+.rev-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;margin-bottom:50px}
+.gbadge{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);padding:14px 22px;border-radius:14px}
+.gbadge .rate{font-family:var(--font-display);font-weight:900;font-size:1.7rem;color:var(--white);line-height:1}
+.gbadge .stars{color:var(--lime);font-size:1rem;letter-spacing:2px}
+.gbadge small{color:var(--muted);font-size:.8rem}
+.reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.review{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:28px 26px;transition:transform .3s,border-color .3s;display:flex;flex-direction:column}
+.review:hover{transform:translateY(-6px);border-color:rgba(223,255,0,.3)}
+.review .stars{color:var(--lime);font-size:1rem;letter-spacing:2px;margin-bottom:14px}
+.review p{color:#dcdce2;font-size:1rem;font-style:italic;margin-bottom:22px;flex:1}
+.review .who{display:flex;align-items:center;gap:13px}
+.review .av{width:44px;height:44px;border-radius:50%;flex:none;display:grid;place-items:center;font-family:var(--font-display);font-weight:800;color:#0a0a0a;background:var(--lime)}
+.review .who b{display:block;font-family:var(--font-display);font-size:.98rem}
+.review .who span{color:var(--muted);font-size:.82rem}
+
+/* CTA */
+.cta{position:relative;overflow:hidden}
+.cta-box{position:relative;background:linear-gradient(150deg,#15150c,#0c0c0e 60%);border:1px solid rgba(223,255,0,.25);border-radius:26px;
+  padding:clamp(34px,5vw,64px);display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;box-shadow:0 40px 90px -40px rgba(223,255,0,.18)}
+.cta-box::before{content:"";position:absolute;top:-120px;left:-80px;width:420px;height:420px;background:radial-gradient(circle,rgba(223,255,0,.18),transparent 65%);pointer-events:none}
+.cta-l{position:relative;z-index:1}
+.cta-l .eyebrow{color:var(--lime)}
+.cta-l h2{font-size:clamp(2.1rem,4.6vw,3.3rem);margin-bottom:16px}
+.cta-l h2 .lime{text-shadow:0 0 26px rgba(223,255,0,.4)}
+.cta-l p{color:var(--muted);font-size:1.1rem;margin-bottom:26px}
+.cta-call{display:inline-flex;align-items:center;gap:12px;margin-bottom:8px}
+.cta-call a{font-family:var(--font-display);font-weight:900;font-size:1.7rem;color:var(--white)}
+.cta-call a:hover{color:var(--lime)}
+.cta-call .ph-ico{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;background:var(--lime);color:#0a0a0a;box-shadow:var(--glow)}
+.cta-call .ph-ico svg{width:22px;height:22px}
+.cta-sub{font-size:.9rem;color:var(--muted-dim)}
+/* form */
+form.lead{position:relative;z-index:1;background:rgba(10,10,11,.6);border:1px solid var(--line);border-radius:18px;padding:28px}
+form.lead .frow{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+form.lead .field{margin-bottom:14px}
+form.lead label{display:block;font-size:.8rem;font-weight:600;color:var(--muted);margin-bottom:6px;font-family:var(--font-display);letter-spacing:.03em}
+form.lead input,form.lead select{width:100%;background:var(--surface-2);border:1px solid var(--line-strong);border-radius:10px;padding:13px 15px;color:var(--white);font-family:var(--font-body);font-size:.96rem;transition:border-color .2s,box-shadow .2s}
+form.lead input::placeholder{color:#5c5c66}
+form.lead input:focus,form.lead select:focus{outline:none;border-color:var(--lime);box-shadow:0 0 0 3px rgba(223,255,0,.12)}
+form.lead .btn{width:100%;justify-content:center;margin-top:6px}
+form.lead .formnote{text-align:center;font-size:.78rem;color:var(--muted-dim);margin-top:14px}
+.form-success{display:none;text-align:center;padding:30px 10px}
+.form-success.show{display:block}
+.form-success .chk{width:64px;height:64px;border-radius:50%;background:var(--lime);display:grid;place-items:center;margin:0 auto 18px;box-shadow:var(--glow)}
+.form-success .chk svg{width:32px;height:32px;color:#0a0a0a}
+.form-success h3{font-size:1.5rem;margin-bottom:8px}
+.form-success p{color:var(--muted)}
+
+/* FOOTER */
+footer{background:#070708;border-top:1px solid var(--line);padding:64px 0 30px}
+.foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.2fr;gap:40px;margin-bottom:46px}
+.foot-brand .brand{margin-bottom:16px}
+.foot-brand p{color:var(--muted);font-size:.94rem;max-width:300px}
+.foot-brand .slogan{color:var(--lime);font-family:var(--font-display);font-weight:700;margin-top:14px;font-size:.95rem}
+footer h4{font-family:var(--font-display);font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:#fff;margin-bottom:18px}
+.foot-col ul{list-style:none;display:flex;flex-direction:column;gap:11px}
+.foot-col a,.foot-col li{color:var(--muted);font-size:.92rem;transition:color .2s}
+.foot-col a:hover{color:var(--lime)}
+.nap{font-style:normal;color:var(--muted);font-size:.92rem;line-height:1.9}
+.nap a:hover{color:var(--lime)}
+.nap strong{color:#fff;font-weight:600;display:block;margin-bottom:6px;font-family:var(--font-display)}
+.foot-bottom{border-top:1px solid var(--line);padding-top:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;color:var(--muted-dim);font-size:.84rem}
+.foot-bottom a{color:var(--muted-dim)}.foot-bottom a:hover{color:var(--lime)}
+
+/* editable image slots */
+.brand-img{height:42px;width:auto;display:block}
+.foot-brand .brand-img{height:46px}
+.local-photo{width:100%;height:auto;border-radius:var(--radius);border:1px solid var(--line);margin:6px 0 6px;display:block}
+.review .av img{width:100%;height:100%;border-radius:50%;object-fit:cover}
+.hpot{position:absolute;left:-9999px;height:0;width:0;overflow:hidden}
+
+/* reveal animation */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1)}
+.reveal.in{opacity:1;transform:none}
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}
+
+/* RESPONSIVE */
+@media(max-width:980px){
+  .hero-grid{grid-template-columns:1fr;gap:44px}
+  .hero-card{max-width:480px}
+  .cards{grid-template-columns:1fr 1fr}
+  .results-grid,.local-grid{grid-template-columns:1fr;gap:40px}
+  .steps{grid-template-columns:1fr;gap:18px}
+  .reviews{grid-template-columns:1fr}
+  .cta-box{grid-template-columns:1fr;gap:34px}
+  .foot-grid{grid-template-columns:1fr 1fr;gap:32px}
+}
+@media(max-width:760px){
+  .nav-links{position:fixed;top:0;right:0;height:100vh;width:min(78vw,320px);background:#0c0c0f;border-left:1px solid var(--line);
+    flex-direction:column;align-items:flex-start;justify-content:center;gap:28px;padding:40px;transform:translateX(100%);transition:transform .35s ease;z-index:999}
+  .nav-links.open{transform:translateX(0)}
+  .nav-links a{font-size:1.25rem;font-family:var(--font-display);font-weight:700;color:#fff}
+  .burger{display:block;z-index:1000}
+  .nav-call .lbl{display:none}
+  .hero{padding:130px 0 70px}
+  .hero-ctas{flex-direction:column;align-items:stretch}
+  .hero-ctas .btn{justify-content:center}
+}
+@media(max-width:520px){
+  .cards{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr 1fr}
+  .foot-grid{grid-template-columns:1fr}
+  form.lead .frow{grid-template-columns:1fr}
+  .section-head h2{font-size:1.9rem}
+}
+</style>
+{% endraw %}
+</head>
+<body>
+<div class="spark-bar"></div>
+
+<!-- ===== NAV ===== -->
+<header class="nav" id="home">
+  <div class="nav-inner">
+    <a href="#home" class="brand" aria-label="{{ business.name }} home">
+      {% if business.logoImage %}<img src="{{ business.logoImage }}" alt="{{ business.name }} logo" class="brand-img">{% else %}
+      <svg class="mark" viewBox="0 0 100 100" role="img" aria-label="{{ business.name }} lightning G logo">
+        <g class="px" fill="#DFFF00">
+          <rect x="10" y="43" width="8" height="8" rx="1"/>
+          <rect x="1" y="38" width="5.5" height="5.5" rx="1"/>
+          <rect x="3" y="52" width="4.5" height="4.5" rx="1"/>
+          <rect x="14" y="56" width="3.2" height="3.2" rx="1"/>
+          <rect x="13" y="33" width="3.2" height="3.2" rx="1"/>
+        </g>
+        <circle cx="52" cy="50" r="38" fill="none" stroke="#DFFF00" stroke-width="6"/>
+        <circle cx="49" cy="50" r="24" fill="none" stroke="#fff" stroke-width="13" stroke-dasharray="121 30" stroke-dashoffset="-15"/>
+        <polygon fill="#DFFF00" points="62,15 47,52 58,52 51,87 79,46 65,46 73,15"/>
+      </svg>
+      <span class="word">GATEWAY <b>SPARK</b></span>{% endif %}
+    </a>
+
+    <nav class="nav-links" id="navLinks">
+      <a href="#services">Services</a>
+      <a href="#results">Results</a>
+      <a href="#local">Local</a>
+      <a href="#process">Process</a>
+      <a href="#reviews">Reviews</a>
+    </nav>
+
+    <div class="nav-cta">
+      <a href="tel:{{ business.phoneHref }}" class="nav-call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span class="lbl">{{ business.phone }}</span></a>
+      <a href="#contact" class="btn btn-primary">{{ business.navCtaLabel }}</a>
+      <button class="burger" id="burger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-left reveal">
+        <span class="hero-badge"><span class="dot"></span>{{ hero.badge }}</span>
+        <h1>{{ hero.headlineLead }} <span class="hl">{{ hero.headlineHighlight }}</span></h1>
+        <p class="sub">{{ hero.subheadline }}</p>
+        <div class="hero-ctas">
+          <a href="#contact" class="btn btn-primary btn-lg">{{ hero.primaryCta }}
+            <svg class="bolt" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4.5 13.5H11l-1 8.5L19.5 10H13z"/></svg>
+          </a>
+          <a href="#contact" class="btn btn-ghost btn-lg">{{ hero.secondaryCta }}</a>
+        </div>
+        <div class="trust-row">
+          {% for t in hero.trust %}
+          <span class="ti">{% if loop.index == 1 %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>{% elif loop.index == 2 %}<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4.5 13.5H11l-1 8.5L19.5 10H13z"/></svg>{% elif loop.index == 3 %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>{% else %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>{% endif %}{{ t.text }}</span>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="hero-right reveal d2">
+        <div class="hero-card">
+          <div class="glow-ring"></div>
+          <div class="hc-top">
+            <span>{{ hero.snapshotTitle }}</span>
+            <span class="live-dot"><i></i>LIVE</span>
+          </div>
+          <div class="hc-bars">
+            {% for bar in hero.snapshotBars %}
+            <div class="hc-bar">
+              <label>{{ bar.label }} <b>{{ bar.value }}</b></label>
+              <div class="hc-track"><div class="hc-fill" data-w="{{ bar.width }}"></div></div>
+            </div>
+            {% endfor %}
+          </div>
+          <div class="hc-foot">
+            <span class="big">{{ hero.snapshotFootNumber }}</span>
+            <span class="lbl">{{ hero.snapshotFootLabel }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SERVICES ===== -->
+<section class="services pad" id="services">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4.5 13.5H11l-1 8.5L19.5 10H13z"/></svg>{{ services.eyebrow }}</span>
+      <h2>{{ services.titleLead }} <span class="lime">{{ services.titleHighlight }}</span></h2>
+      <p>{{ services.intro }}</p>
+    </div>
+
+    <div class="cards">
+      {% for s in services.items %}
+      <article class="card reveal d{{ loop.index }}">
+        <div class="ico">{% if loop.index == 1 %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>{% elif loop.index == 2 %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg>{% elif loop.index == 3 %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12a10 10 0 1 0 20 0 10 10 0 0 0-20 0z"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20zM2 12h20"/></svg>{% else %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="2"/><path d="M12 8V4m-4 4V5m8 3V5"/><circle cx="9" cy="14" r="1"/><circle cx="15" cy="14" r="1"/></svg>{% endif %}</div>
+        <span class="tag">{{ s.tag }}</span>
+        <h3>{{ s.title }}</h3>
+        <p>{{ s.desc }}</p>
+        <ul>
+          {% for b in s.bullets %}
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg>{{ b }}</li>
+          {% endfor %}
+        </ul>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ===== RESULTS / VALUE PROP ===== -->
+<section class="results pad alt" id="results">
+  <div class="wrap">
+    <div class="results-grid">
+      <div class="results-copy reveal">
+        <span class="eyebrow"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4.5 13.5H11l-1 8.5L19.5 10H13z"/></svg>{{ results.eyebrow }}</span>
+        <h2>{{ results.titleLead }} <span class="lime">{{ results.titleHighlight }}</span></h2>
+        {% for p in results.paragraphs %}<p>{{ p }}</p>
+        {% endfor %}<p class="lead-line">{{ results.leadLine }}</p>
+        <div class="hero-ctas" style="margin-top:30px">
+          <a href="{{ results.ctaHref }}" class="btn btn-ghost">{{ results.ctaLabel }}</a>
+        </div>
+      </div>
+      <div class="stats reveal d2">
+        {% for st in results.stats %}
+        <div class="stat"><div class="num" data-count="{{ st.count }}" data-suffix="{{ st.suffix }}">0</div><div class="lbl">{{ st.label }}</div></div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== LOCAL TRUST ===== -->
+<section class="local pad" id="local">
+  <div class="wrap">
+    <div class="local-grid">
+      <div class="local-copy reveal">
+        <span class="eyebrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>{{ local.eyebrow }}</span>
+        <h2>{{ local.titleLead }} <span class="lime">{{ local.titleHighlight }}</span> {{ local.titleEnd }}</h2>
+        {% for p in local.paragraphs %}<p>{{ p }}</p>
+        {% endfor %}{% if local.image %}<img src="{{ local.image }}" alt="{{ business.name }} serving {{ business.addressCity }}, {{ business.addressState }}" class="local-photo">{% endif %}
+        <div class="areas">
+          {% for a in local.areas %}<span class="{% if a.hq %}hq{% endif %}">{{ a.name }}</span>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="pains reveal d2">
+        {% for pain in local.pains %}
+        <div class="pain">
+          <div class="pi">{% if loop.index == 1 %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>{% elif loop.index == 2 %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>{% else %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>{% endif %}</div>
+          <div><h4>{{ pain.title }}</h4><p>{{ pain.body }}</p></div>
+        </div>
+        {% endfor %}
+        <a href="#contact" class="btn btn-primary" style="margin-top:6px">{{ local.ctaLabel }}
+          <svg class="bolt" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4.5 13.5H11l-1 8.5L19.5 10H13z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROCESS ===== -->
+<section class="process pad alt" id="process">
+  <div class="wrap">
+    <div class="section-head reveal" style="max-width:none;text-align:center;margin-left:auto;margin-right:auto">
+      <span class="eyebrow" style="justify-content:center"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4.5 13.5H11l-1 8.5L19.5 10H13z"/></svg>{{ process.eyebrow }}</span>
+      <h2>{{ process.titleLead }} <span class="lime">{{ process.titleHighlight }}</span></h2>
+    </div>
+    <div class="steps">
+      {% for step in process.steps %}
+      <div class="step reveal d{{ loop.index }}">
+        {% if loop.index == 1 %}<svg class="stepico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>{% elif loop.index == 2 %}<svg class="stepico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.6 5.6l-6 6a2 2 0 1 0 2.8 2.8l6-6a4 4 0 0 0 5.6-5.6l-2.1 2.1-2.8-2.8z"/></svg>{% else %}<svg class="stepico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>{% endif %}
+        <div class="n">{{ step.n }}</div>
+        <h3>{{ step.title }}</h3>
+        <p>{{ step.body }}</p>
+      </div>
+      {% endfor %}
+    </div>
+    <div style="text-align:center;margin-top:46px" class="reveal">
+      <a href="#contact" class="btn btn-primary btn-lg">{{ process.ctaLabel }}</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== REVIEWS ===== -->
+<section class="reviews-sec pad" id="reviews">
+  <div class="wrap">
+    <div class="rev-head reveal">
+      <div class="section-head" style="margin-bottom:0">
+        <span class="eyebrow"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4.5 13.5H11l-1 8.5L19.5 10H13z"/></svg>{{ reviews.eyebrow }}</span>
+        <h2>{{ reviews.titleLead }} <span class="lime">{{ reviews.titleHighlight }}</span></h2>
+      </div>
+      <div class="gbadge">
+        <div class="rate">{{ reviews.rating }}</div>
+        <div><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><small>{{ reviews.ratingLabel }}</small></div>
+      </div>
+    </div>
+
+    <div class="reviews">
+      {% for r in reviews.items %}
+      <div class="review reveal d{{ loop.index }}">
+        <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p>&ldquo;{{ r.quote }}&rdquo;</p>
+        <div class="who"><div class="av">{% if r.avatar %}<img src="{{ r.avatar }}" alt="{{ r.name }}">{% else %}{{ r.initials }}{% endif %}</div><div><b>{{ r.name }}</b><span>{{ r.meta }}</span></div></div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA / CONTACT ===== -->
+<section class="cta pad alt" id="contact">
+  <div class="wrap">
+    <div class="cta-box reveal">
+      <div class="cta-l">
+        <span class="eyebrow"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4.5 13.5H11l-1 8.5L19.5 10H13z"/></svg>{{ cta.eyebrow }}</span>
+        <h2>{{ cta.titleLead }} <span class="lime">{{ cta.titleHighlight }}</span></h2>
+        <p>{{ cta.body }}</p>
+        <div class="cta-call">
+          <span class="ph-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+          <a href="tel:{{ business.phoneHref }}">{{ business.phone }}</a>
+        </div>
+        <p class="cta-sub">{{ cta.subline }}</p>
+      </div>
+
+      <div class="cta-r">
+        <form class="lead" id="leadForm" name="lead" method="POST" data-netlify="true" netlify-honeypot="bot-field" novalidate>
+          <input type="hidden" name="form-name" value="lead">
+          <p class="hpot"><label>Don&rsquo;t fill this out if you&rsquo;re human: <input name="bot-field"></label></p>
+          <div class="field"><label for="name">Your Name</label><input type="text" id="name" name="name" placeholder="Jordan Smith" required></div>
+          <div class="frow">
+            <div class="field"><label for="biz">Business Name</label><input type="text" id="biz" name="business" placeholder="Smith Plumbing"></div>
+            <div class="field"><label for="phone">Phone</label><input type="tel" id="phone" name="phone" placeholder="(636) 555-0123" required></div>
+          </div>
+          <div class="field"><label for="email">Email</label><input type="email" id="email" name="email" placeholder="you@business.com" required></div>
+          <div class="field"><label for="service">What do you need most?</label>
+            <select id="service" name="service">
+              <option value="">Choose a service&hellip;</option>
+              {% for opt in cta.serviceOptions %}<option>{{ opt }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg">{{ cta.buttonLabel }}
+            <svg class="bolt" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4.5 13.5H11l-1 8.5L19.5 10H13z"/></svg>
+          </button>
+          <p class="formnote">{{ cta.formNote }}</p>
+        </form>
+        <div class="form-success" id="formSuccess">
+          <div class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></div>
+          <h3>{{ cta.successTitle }}</h3>
+          <p>{{ cta.successBody }} <a href="tel:{{ business.phoneHref }}" class="lime">{{ business.phone }}</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="#home" class="brand" aria-label="{{ business.name }} home">
+          {% if business.logoImage %}<img src="{{ business.logoImage }}" alt="{{ business.name }} logo" class="brand-img">{% else %}
+          <svg class="mark" viewBox="0 0 100 100" role="img" aria-label="{{ business.name }} lightning G logo">
+            <g class="px" fill="#DFFF00">
+              <rect x="10" y="43" width="8" height="8" rx="1"/>
+              <rect x="1" y="38" width="5.5" height="5.5" rx="1"/>
+              <rect x="3" y="52" width="4.5" height="4.5" rx="1"/>
+              <rect x="14" y="56" width="3.2" height="3.2" rx="1"/>
+              <rect x="13" y="33" width="3.2" height="3.2" rx="1"/>
+            </g>
+            <circle cx="52" cy="50" r="38" fill="none" stroke="#DFFF00" stroke-width="6"/>
+            <circle cx="49" cy="50" r="24" fill="none" stroke="#fff" stroke-width="13" stroke-dasharray="121 30" stroke-dashoffset="-15"/>
+            <polygon fill="#DFFF00" points="62,15 47,52 58,52 51,87 79,46 65,46 73,15"/>
+          </svg>
+          <span class="word">GATEWAY <b>SPARK</b></span>{% endif %}
+        </a>
+        <p>{{ footer.about }}</p>
+        <p class="slogan">{{ business.tagline }}</p>
+      </div>
+
+      <div class="foot-col">
+        <h4>{{ footer.servicesHeading }}</h4>
+        <ul>
+          {% for l in footer.servicesLinks %}<li><a href="{{ l.href }}">{{ l.label }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="foot-col">
+        <h4>{{ footer.areasHeading }}</h4>
+        <ul>
+          {% for a in footer.serviceAreas %}<li>{{ a }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="foot-col">
+        <h4>{{ footer.contactHeading }}</h4>
+        <address class="nap">
+          <strong>{{ business.name }}</strong>
+          {{ business.addressStreet }}<br>
+          {{ business.addressCity }}, {{ business.addressState }} {{ business.addressZip }}<br>
+          <a href="tel:{{ business.phoneHref }}">{{ business.phone }}</a><br>
+          <a href="mailto:{{ business.email }}">{{ business.email }}</a><br>
+          <span style="color:var(--muted-dim)">{{ business.hours }}</span>
+        </address>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <span>&copy; <span id="yr"></span> {{ business.name }} &middot; Marketing Agency in {{ business.addressCity }}, {{ business.addressState }}. All rights reserved.</span>
+      <span>{{ footer.bottomTagline }}</span>
+    </div>
+  </div>
+</footer>
+
+{% raw %}
+<script>
+(function(){
+  // year
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // sticky nav style
+  var nav = document.querySelector('header.nav');
+  var onScroll = function(){ nav.classList.toggle('scrolled', window.scrollY > 24); };
+  onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
+
+  // mobile menu
+  var burger = document.getElementById('burger');
+  var links = document.getElementById('navLinks');
+  burger.addEventListener('click', function(){
+    burger.classList.toggle('open'); links.classList.toggle('open');
+  });
+  links.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){ burger.classList.remove('open'); links.classList.remove('open'); });
+  });
+
+  // reveal on scroll
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, {threshold:0.12, rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+  // hero bars fill when visible
+  var heroCard = document.querySelector('.hero-card');
+  if(heroCard){
+    var hb = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          e.target.querySelectorAll('.hc-fill').forEach(function(f){ f.style.width = f.getAttribute('data-w'); });
+          hb.unobserve(e.target);
+        }
+      });
+    }, {threshold:0.3});
+    hb.observe(heroCard);
+  }
+
+  // animated counters
+  function animateCount(el){
+    var target = parseFloat(el.getAttribute('data-count'));
+    var suffix = el.getAttribute('data-suffix') || '';
+    var decimals = (target % 1 !== 0) ? 1 : 0;
+    var dur = 1500, start = null;
+    function step(ts){
+      if(!start) start = ts;
+      var p = Math.min((ts - start)/dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      var val = (target * eased).toFixed(decimals);
+      el.innerHTML = val + '<span class="suf">' + suffix + '</span>';
+      if(p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  var co = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting){ animateCount(e.target); co.unobserve(e.target); }
+    });
+  }, {threshold:0.5});
+  document.querySelectorAll('.num[data-count]').forEach(function(el){ co.observe(el); });
+
+  // form -> Netlify Forms (AJAX) + custom success state
+  var form = document.getElementById('leadForm');
+  if(form){
+    form.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      if(!form.checkValidity()){ form.reportValidity(); return; }
+      var body = new URLSearchParams(new FormData(form)).toString();
+      var done = function(){
+        form.style.display = 'none';
+        document.getElementById('formSuccess').classList.add('show');
+      };
+      fetch('/', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: body })
+        .then(done).catch(done);
+    });
+  }
+})();
+</script>
+{% endraw %}
+</body>
+</html>

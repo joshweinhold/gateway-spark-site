@@ -1,0 +1,22 @@
+{
+  "badge": "St. Peters • St. Charles County • St. Louis",
+  "headlineLead": "The Marketing Agency in St. Peters, MO Built to Get Local Businesses",
+  "headlineHighlight": "More Customers.",
+  "subheadline": "We help contractors, restaurants, salons & service pros across St. Charles County and St. Louis show up first on Google, win more calls, and book more jobs — with local SEO, fast websites, and AI automation that never sleeps.",
+  "primaryCta": "Get More Customers",
+  "secondaryCta": "Free Website Audit",
+  "trust": [
+    { "text": "100% Local" },
+    { "text": "Fast Turnaround" },
+    { "text": "Proven Results" },
+    { "text": "No Long Contracts" }
+  ],
+  "snapshotTitle": "Local Growth Snapshot",
+  "snapshotBars": [
+    { "label": "Google Map Pack Ranking", "value": "#1", "width": "94%" },
+    { "label": "Website Speed Score", "value": "98/100", "width": "98%" },
+    { "label": "New Leads This Month", "value": "+162%", "width": "82%" }
+  ],
+  "snapshotFootNumber": "38",
+  "snapshotFootLabel": "new calls & form leads captured this month"
+}

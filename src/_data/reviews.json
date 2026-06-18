@@ -1,0 +1,30 @@
+{
+  "eyebrow": "Social Proof",
+  "titleLead": "Local Owners.",
+  "titleHighlight": "Real Growth.",
+  "rating": "5.0",
+  "ratingLabel": "Rated by 47 local businesses",
+  "items": [
+    {
+      "quote": "Within two months we were ranking in the top 3 on Google Maps and the phone hasn’t stopped ringing. Best money we’ve ever spent on the business.",
+      "name": "Mike R.",
+      "meta": "R&R Roofing — O’Fallon, MO",
+      "initials": "MR",
+      "avatar": ""
+    },
+    {
+      "quote": "Our old website was embarrassing and slow. Gateway Spark rebuilt it in two weeks and we’re booking more tables than we ever have. Total game-changer.",
+      "name": "Gina T.",
+      "meta": "Bella’s Kitchen — St. Charles, MO",
+      "initials": "GT",
+      "avatar": ""
+    },
+    {
+      "quote": "The missed-call text-back alone paid for everything. We’re catching leads we used to lose every single day. These guys just get it.",
+      "name": "Dave K.",
+      "meta": "Summit HVAC — St. Peters, MO",
+      "initials": "DK",
+      "avatar": ""
+    }
+  ]
+}
