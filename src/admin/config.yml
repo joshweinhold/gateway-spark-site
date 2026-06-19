@@ -6,7 +6,7 @@
 
 backend:
   name: github
-  repo: YOUR_GITHUB_USERNAME/gateway-spark-site   # <-- CHANGE ME (e.g. janedoe/gateway-spark-site)
+  repo: joshweinhold/gateway-spark-site   # <-- CHANGE ME (e.g. janedoe/gateway-spark-site)
   branch: main
 
 # Where uploaded images are committed, and the URL path used on the live site
