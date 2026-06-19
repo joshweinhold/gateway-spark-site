@@ -1,0 +1,49 @@
+---
+permalink: /blog/
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% set pageTitle = "Blog — Local Marketing Tips | " + business.name %}
+{% set pageDesc = "Local SEO, web design, and small business marketing tips from " + business.name + " in " + business.addressCity + ", " + business.addressState + "." %}
+{% include "head.njk" %}
+<link rel="canonical" href="{{ business.siteUrl }}/blog/">
+</head>
+<body>
+<div class="spark-bar"></div>
+{% include "nav.njk" %}
+
+<section class="blog-head">
+  <div class="wrap">
+    <span class="eyebrow"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4.5 13.5H11l-1 8.5L19.5 10H13z"/></svg>The Gateway Spark Blog</span>
+    <h1>Local Marketing Tips That <span class="lime">Get You Customers</span></h1>
+    <p>Straight-talk advice on local SEO, fast websites, and lead generation for small businesses across St. Charles County &amp; St. Louis.</p>
+  </div>
+</section>
+
+<section class="pad" style="padding-top:54px">
+  <div class="wrap">
+    {% if collections.post %}
+    <div class="post-grid">
+      {% for post in collections.post | reverse %}
+      <a class="post-card reveal" href="{{ post.url }}">
+        {% if post.data.cover %}<div class="post-card-img" style="background-image:url('{{ post.data.cover }}')"></div>{% endif %}
+        <div class="post-card-body">
+          <span class="post-date">{{ post.date | readableDate }}</span>
+          <h3>{{ post.data.title }}</h3>
+          <p>{{ post.data.description }}</p>
+          <span class="post-readmore">Read article &rarr;</span>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="blog-empty">No posts yet — check back soon, or add your first article in the editor.</p>
+    {% endif %}
+  </div>
+</section>
+
+{% include "footer.njk" %}
+{% include "scripts.njk" %}
+</body>
+</html>

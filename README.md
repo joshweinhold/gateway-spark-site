@@ -97,6 +97,14 @@ The contact form is already wired to **Netlify Forms** (free, up to 100 submissi
 
 Every change is saved to GitHub, so you have full version history and can roll back.
 
+### Writing blog posts
+Your site has a blog at **`/blog/`** (also linked in the top menu).
+1. In `/admin`, open **Blog Posts** in the left sidebar → **New Post**.
+2. Fill in the **Title**, **Publish Date**, a short **Description** (used on the blog cards and by Google), an optional **Cover image**, and write your **Article** in the rich editor.
+3. Click **Publish**. The new post appears at the top of `/blog/` and gets its own page (e.g. `/blog/your-title/`) automatically — no extra setup.
+
+Two starter articles are included; edit or delete them anytime from **Blog Posts**.
+
 ### Where things live
 | Section | File the CMS edits |
 |---|---|

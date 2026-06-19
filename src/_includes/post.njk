@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% set pageTitle = title + " | " + business.name %}
+{% set pageDesc = description if description else (title + " — " + business.name) %}
+{% include "head.njk" %}
+<link rel="canonical" href="{{ business.siteUrl }}{{ page.url }}">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "{{ title | safe }}",
+  "description": "{{ pageDesc | safe }}",
+  "datePublished": "{{ page.date | htmlDate }}",
+  "author": { "@type": "Organization", "name": "{{ business.name | safe }}" },
+  "publisher": { "@type": "Organization", "name": "{{ business.name | safe }}" },
+  "mainEntityOfPage": "{{ business.siteUrl | safe }}{{ page.url }}"
+}
+</script>
+</head>
+<body>
+<div class="spark-bar"></div>
+{% include "nav.njk" %}
+
+<article class="article">
+  <div class="wrap-narrow">
+    <a href="/blog/" class="back-link">&larr; All articles</a>
+    <span class="post-date">{{ page.date | readableDate }}</span>
+    <h1>{{ title }}</h1>
+    {% if description %}<p class="article-lead">{{ description }}</p>{% endif %}
+    {% if cover %}<img class="article-cover" src="{{ cover }}" alt="{{ title }}">{% endif %}
+    <div class="article-body">
+      {{ content | safe }}
+    </div>
+    <div class="article-cta">
+      <h3>Want results like this for your business?</h3>
+      <a href="/#contact" class="btn btn-primary btn-lg">Get More Customers
+        <svg class="bolt" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4.5 13.5H11l-1 8.5L19.5 10H13z"/></svg>
+      </a>
+    </div>
+  </div>
+</article>
+
+{% include "footer.njk" %}
+{% include "scripts.njk" %}
+</body>
+</html>

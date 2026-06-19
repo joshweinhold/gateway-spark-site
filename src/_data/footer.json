@@ -2,11 +2,26 @@
   "about": "The local marketing agency that helps St. Charles County & St. Louis small businesses get found, get calls, and grow.",
   "servicesHeading": "Services",
   "servicesLinks": [
-    { "label": "Local SEO", "href": "#services" },
-    { "label": "Website Design", "href": "#services" },
-    { "label": "Branding", "href": "#services" },
-    { "label": "AI Automation", "href": "#services" },
-    { "label": "Lead Generation", "href": "#contact" }
+    {
+      "label": "Local SEO",
+      "href": "/#services"
+    },
+    {
+      "label": "Website Design",
+      "href": "/#services"
+    },
+    {
+      "label": "Branding",
+      "href": "/#services"
+    },
+    {
+      "label": "AI Automation",
+      "href": "/#services"
+    },
+    {
+      "label": "Lead Generation",
+      "href": "/#contact"
+    }
   ],
   "areasHeading": "Service Areas",
   "serviceAreas": [

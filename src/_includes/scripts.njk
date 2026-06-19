@@ -1,0 +1,84 @@
+{% raw %}
+<script>
+(function(){
+  // year
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // sticky nav style
+  var nav = document.querySelector('header.nav');
+  var onScroll = function(){ nav.classList.toggle('scrolled', window.scrollY > 24); };
+  onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
+
+  // mobile menu
+  var burger = document.getElementById('burger');
+  var links = document.getElementById('navLinks');
+  burger.addEventListener('click', function(){
+    burger.classList.toggle('open'); links.classList.toggle('open');
+  });
+  links.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){ burger.classList.remove('open'); links.classList.remove('open'); });
+  });
+
+  // reveal on scroll
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, {threshold:0.12, rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+  // hero bars fill when visible
+  var heroCard = document.querySelector('.hero-card');
+  if(heroCard){
+    var hb = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          e.target.querySelectorAll('.hc-fill').forEach(function(f){ f.style.width = f.getAttribute('data-w'); });
+          hb.unobserve(e.target);
+        }
+      });
+    }, {threshold:0.3});
+    hb.observe(heroCard);
+  }
+
+  // animated counters
+  function animateCount(el){
+    var target = parseFloat(el.getAttribute('data-count'));
+    var suffix = el.getAttribute('data-suffix') || '';
+    var decimals = (target % 1 !== 0) ? 1 : 0;
+    var dur = 1500, start = null;
+    function step(ts){
+      if(!start) start = ts;
+      var p = Math.min((ts - start)/dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      var val = (target * eased).toFixed(decimals);
+      el.innerHTML = val + '<span class="suf">' + suffix + '</span>';
+      if(p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  var co = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting){ animateCount(e.target); co.unobserve(e.target); }
+    });
+  }, {threshold:0.5});
+  document.querySelectorAll('.num[data-count]').forEach(function(el){ co.observe(el); });
+
+  // form -> Netlify Forms (AJAX) + custom success state
+  var form = document.getElementById('leadForm');
+  if(form){
+    form.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      if(!form.checkValidity()){ form.reportValidity(); return; }
+      var body = new URLSearchParams(new FormData(form)).toString();
+      var done = function(){
+        form.style.display = 'none';
+        document.getElementById('formSuccess').classList.add('show');
+      };
+      fetch('/', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: body })
+        .then(done).catch(done);
+    });
+  }
+})();
+</script>
+{% endraw %}
